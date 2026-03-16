@@ -1,5 +1,6 @@
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.example.exception.ApostaInvalidaException;
 import org.example.model.entity.Aposta;
 import org.example.service.LoteriaService;
 import org.junit.jupiter.api.Test;
@@ -43,5 +44,14 @@ class LoteriaTest {
 
         assertEquals(6, sorteio.size());
         assertTrue(sorteio.stream().allMatch(n -> n >= 1 && n <= 60));
+    }
+
+    @Test
+    void deveLancarExcecaoParaApostaComPoucasDezenas() {
+        Set<Integer> poucasDezenas = new TreeSet<>(Arrays.asList(1, 2, 3, 4, 5));
+
+        assertThrows(ApostaInvalidaException.class, () -> {
+            new Aposta(poucasDezenas, 100.0);
+        });
     }
 }
